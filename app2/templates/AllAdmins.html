@@ -1,0 +1,71 @@
+{% extends "AdminDash.html" %}
+{% load static %}
+{% block m1 %}
+<style>
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center the cards */
+    margin: 20px; /* Margin around the container */
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensures child elements are clipped */
+    width: 18rem; /* Fixed width for consistency */
+    transition: transform 0.2s; /* Animation for hover effect */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.card-img-top {
+    width: 100%; /* Make the image responsive */
+    height: 100%; /* Fixed height to maintain uniformity */
+    object-fit: cover; /* Ensures the image covers the area */
+}
+
+.card-body {
+    padding: 15px; /* Padding inside the card */
+}
+
+.card-title {
+    font-size: 1.5rem; /* Font size for the title */
+    margin-bottom: 10px; /* Space below the title */
+}
+
+.card-text {
+    font-size: 1rem; /* Font size for text */
+    color: #555; /* Text color for better readability */
+}
+</style>
+{% if data %}
+<div class="row">
+    {% for d in data %}
+        <div class="card m-4" style="width: 18rem;">
+            {% if photo %}
+                {% for pic in photo %}
+                    {% if pic.email == d.email %}
+                        <img class="card-img-top" src="../media/{{ pic.photo }}" alt="Card image cap">
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ d.name }}</h5>
+                <p class="card-text">
+                    Address: {{ d.address }} <br/>
+                    Email: {{ d.email }} <br/>
+                    Contact: {{ d.contact }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+{% elif msg %}
+    <h3>{{ msg }}</h3>
+{% endif %}
+    </div>
+{% endblock %}

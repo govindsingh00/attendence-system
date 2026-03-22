@@ -1,0 +1,18 @@
+{% extends "AdminDash.html" %}
+{% load static %}
+{% block m1 %}
+<h1>Update Photo</h1>
+{% if data %}
+{% for d in data %}
+<form method="post" action="http://127.0.0.1:8000/chngephoto1/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>OLD PROFILE PHOTO
+        <input src="http://127.0.0.1:8000/media/{{d.photo}}" type="image" width="100" height="100" />
+        <input type="hidden" width="100" height="100" name="IMG1" value="{{d.photo}}" />
+    </p>
+    <p>Select NEW Photo <input type="file" name="F1" /> </p>
+    <button type="submit">Upload</button>
+</form>
+{% endfor %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "studentDash.html" %}
+{% load static %}
+{% block s1 %}
+<h1>Change Password</h1>
+{% if data %}
+    {% for d in data %}
+        <form method="post" action="http://127.0.0.1:8000/student_pass_change1/">
+            {% csrf_token %}
+            <p>Old Password:<input type="text" name="t1" /> </p>
+            <p>New Password:<input type="text" name="t2" /> </p>
+            <p>Confirm Password:<input type="text" name="t3" /> </p>
+            <input type="hidden" name="E1" value="{{d.email}}"/>
+            <button type="submit">Change Password</button>
+        </form>
+    {% endfor %}
+{% elif msg %}
+    <h3>{{msg}}</h3>
+    <p><a href="http://127.0.0.1:8000/logout/">Click Here to Save Changes</a><br><strong>Warning!! you will be logout by click</strong></p>
+{% endif %}
+{% endblock %}

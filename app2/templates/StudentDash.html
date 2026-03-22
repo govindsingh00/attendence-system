@@ -1,0 +1,50 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../static/bootstrap/adminbootstrap.css" type="text/css">
+    <script src="../static/jquery/jquery.js"></script>
+    <script src="../static/bootstrap/popper.min.js" ></script>
+    <script src="../static/bootstrap/bootstrap.min.js" ></script>
+    <script src="../static/bootstrap/bootstrap.bundle.js" ></script>
+    <title>Admin Dashboard</title>
+    <style>
+      h1,h2,h3,h4
+      {
+        color:#1f4c70;
+      }
+    </style>
+  </head>
+  <body class="bg-dark" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg bg-info" data-bs-theme="dark">
+        <div class="container-fluid ">
+          <a class="navbar-brand" href="#">APNACLASSES</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link active" href="http://127.0.0.1:8000/student_home/">Home
+                  <span class="visually-hidden">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="http://127.0.0.1:8000/logout/">logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container mt-4">
+        {% block s1 %}
+        {% endblock %}
+      </div>
+
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "AdminDash.html" %}
+{% load static %}
+{% block m1 %}
+<h>All Enrolled Students</h>
+<table border="2px" width="100%" cellpadding="3px" style="border-collapse:collapse;">
+    <thead>
+        <th>STUDENT ID</th>
+        <th>STUDENT NAME</th>
+        <th>FATHER'S NAME</th>
+        <th>DOB</th>
+        <th>GENDER</th>
+        <th>ADDRESS</th>
+        <th>CONTACT</th>
+        <th>MANAGE</th>
+    </thead>
+    {% if data %}
+        {% for d in data %}
+            <tbody>
+                <tr>
+                    <td>{{d.stid}}</td>
+                    <td>{{d.stname}}</td>
+                    <td>{{d.fname}}</td>
+                    <td>{{d.dob}}</td>
+                    <td>{{d.gender}}</td>
+                    <td>{{d.address}}</td>
+                    <td>{{d.contact}}</td>
+                    <td>
+                        <form method="post" action="http://127.0.0.1:8000/ADviewstudent/">
+                            {% csrf_token %}
+                            <input type="hidden" name="S1" value="{{d.stid}}" />
+                            <input type="hidden" name="S2" value="{{d.email}}" />
+                            <button type="submit">VIEW PROFILE</button>
+                        </form>
+
+                        <form method="post" action="http://127.0.0.1:8000/deletestudentprofile/">
+                            {% csrf_token %}
+                            <input type="hidden" name="S1" value="{{d.stid}}" />
+                            <input type="hidden" name="S2" value="{{d.email}}" />
+                            <button type="submit">DELETE PROFILE</button>
+                        </form>
+                    </td>
+
+                </tr>
+            </tbody>
+        {% endfor %}
+    {% endif %}
+</table>
+{% endblock %}

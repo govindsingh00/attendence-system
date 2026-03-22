@@ -1,0 +1,61 @@
+
+{% extends "AdminDash.html" %}
+{% load static %}
+{% block m1 %}
+<h1> Student Registration Form </h1>
+<p class="p1"> Fill out the form for registration </p>
+<hr><hr>
+<form method="post" action="http://127.0.0.1:8000/student_reg/">
+    {% csrf_token %}
+<p> Student Name <br>
+    <input type="text" name="t1" placeholder="Enter Your First Name"/>
+    <input type="text" name="t2" placeholder="Enter Your Last Name"/>
+</p>
+<p> Father's Name
+    <input type="text" name="t111" placeholder="Enter Fathers Name" />
+</p>
+<p> Date of Birth   <input name="t3" pattern="\d{2}/\d{2}/\d{4}" type="text" placeholder="dd/mm/yyyy" /> </p>
+<p> Gender <input type="radio" name="R1" value="Male" /> Male
+<input type="radio" name="R1" value="Female" /> Female
+<input type="radio" name="R1" value="Transgender" /> Transgender
+</p>
+<p> Permanent Address <br>
+    <input type="text" name="t4" placeholder="Address line 1"/> <br>
+    <input type="text" name="t5" placeholder="Address line 2"/></p>
+<p> City <input type="text" name="t6"/></p>
+<p> Pin-code <input type="text" name="t7" /></p>
+<p> State <input type="text" name="t8" /></p>
+<p> Last Qualification Details <br>
+    <select class="txt3" name="t9">
+        <option> B.Sc </option>
+        <option> M.sc </option>
+        <option> BCA </option>
+        <option> B.com </option>
+        <option> M.com </option>
+        <option> 12th </option>
+        <option> 10th </option>
+        <option> pre-nurture </option>
+        <option> B.tech </option>
+        <option> M.tech </option>
+    </select>
+</p>
+<p> contact <br>
+    <input type="text" name="t222"/>
+</p>
+<p> Email <br>
+    <input type="text" name="t11"/>
+</p>
+<p> Password <br>
+    <input type="password" name="t12"/>
+</p>
+<p> Confirm Password <br>
+    <input type="password" name="t13"/>
+</p>
+<p> <button type="reset" > Clear Fields</button></p>
+<P> <button type="submit" > Submit Form</button></P>
+</form>
+{% if msg %}
+    <h3>{{msg}}</h3>
+{% endif %}
+{% endblock %}
+

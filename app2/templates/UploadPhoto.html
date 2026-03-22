@@ -1,0 +1,10 @@
+{% extends "AdminDash.html" %}
+{% load static %}
+{% block m1 %}
+<h1>Upload Photo</h1>
+<form method="post" action="http://127.0.0.1:8000/uploadphoto/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>Select New Photo <input type="file" name="F1" /> </p>
+    <button type="submit">Upload</button>
+</form>
+{% endblock %}
