@@ -18,6 +18,8 @@ def login(request):
             return HttpResponseRedirect("/admin_home/")
         elif ut=="student":
             return HttpResponseRedirect("/student_home/")
+        elif ut=="teacher":
+            return HttpResponseRedirect("/teacher_home/")
         else:
             return render(request, "Login.html",{"msg":"Either Email or Password is Incorrect"})
     else:
@@ -122,6 +124,60 @@ def student_reg(request):
     else:
         return HttpResponseRedirect("/autherror/")
 
+def teacher_reg(request):
+    if request.session.has_key("email"):
+        ut = request.session["ut"]
+
+        if ut == "admin":
+            courses = Coursedata.objects.all()
+
+            if request.method == "POST":
+                t = Teacherdata()
+                lgn = Logindata()
+                ph = Photodata()
+
+                nm = request.POST["t1"] + " " + request.POST["t2"]
+                add = request.POST["t5"] + " " + request.POST["t6"] + " " + request.POST["t7"] + " " + request.POST["t8"] + " " + request.POST["t9"]
+
+                em = request.POST["t11"]
+
+                t.name = nm
+                t.crid = request.POST["t3"]
+                t.email = em
+                t.phone = request.POST["t10"]
+                t.gender = request.POST["R1"]
+                t.dob = request.POST["t4"]
+                t.address = add
+
+                lgn.email = em
+                lgn.password = request.POST["t12"]
+                lgn.usertype = "teacher"
+
+                # ✅ Photo Handling
+                file = request.FILES["photo"]
+                import os
+                from django.conf import settings
+
+                filepath = os.path.join(settings.MEDIA_ROOT, file.name)
+                with open(filepath, 'wb+') as destination:
+                    for chunk in file.chunks():
+                        destination.write(chunk)
+
+                ph.email = em
+                ph.photo = file.name
+
+                t.save()
+                lgn.save()
+                ph.save()
+
+                return render(request, "TeacherReg.html", {"msg": "Teacher Registered Successfully", "courses": courses})
+            else:
+                return render(request, "TeacherReg.html", {"courses": courses})
+        else:
+            return HttpResponseRedirect("/autherror/")
+    else:
+        return HttpResponseRedirect("/autherror/")
+
 def admin_home(request):
     if request.session.has_key("email"):
         ut = request.session["ut"]
@@ -130,6 +186,21 @@ def admin_home(request):
             adm = Admindata.objects.filter(email=em)
             pic = Photodata.objects.filter(email=em)
             return render(request,"AdminHome.html",{"data":adm,"data1":pic})
+        else:
+            return HttpResponseRedirect("/autherror/")
+    else:
+        return HttpResponseRedirect("/autherror/")
+
+def teacher_home(request):
+    if request.session.has_key("email"):
+        ut = request.session["ut"]
+        em = request.session["email"]
+
+        if ut == "teacher":
+            tchr = Teacherdata.objects.filter(email=em)
+            pic = Photodata.objects.filter(email=em)
+
+            return render(request, "TeacherHome.html", {"data": tchr, "data1": pic})
         else:
             return HttpResponseRedirect("/autherror/")
     else:
@@ -414,6 +485,23 @@ def alladmins(request):
     photo = Photodata.objects.all()
     return render(request,'AllAdmins.html',{"data":records,"photo":photo})
 
+def allteachers(request):
+    records = Teacherdata.objects.all()
+    data = []
+
+    for t in records:
+        try:
+            p = Photodata.objects.get(email=t.email)
+            photo = p.photo
+        except:
+            photo = None
+
+        data.append({
+            "teacher": t,
+            "photo": photo
+        })
+
+    return render(request, 'AllTeachers.html', {"data": data})
 
 # for photo
 def uploadphoto(request):
@@ -436,7 +524,10 @@ def uploadphoto(request):
             obj.photo = filename
             obj.save()
 
-            return HttpResponseRedirect("/admin_home/")
+            if(ut=="admin"):
+                return HttpResponseRedirect("/admin_home/")
+            elif(ut=="teacher"):
+                return HttpResponseRedirect("/teacher_home/")
 
         else:
 

@@ -61,6 +61,10 @@ urlpatterns = [
     path('studentinstallmentadd/', studentinstallmentadd),
     path('studentinstallmentadd1/', studentinstallmentadd1),
 
+    path('teacher_reg/', teacher_reg),
+    path('allteachers/', allteachers),
+    path('teacher_home/', teacher_home),
+
     path('studentuploadphoto/', studentuploadphoto),
     path('studentchngephoto/', studentchngephoto),
     path('studentchngephoto1/', studentchngephoto1),

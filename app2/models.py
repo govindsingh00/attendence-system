@@ -9,6 +9,30 @@ class Admindata(models.Model):
     def __str__(self):
         return self.name
 
+class Coursedata(models.Model):
+    cid = models.AutoField(primary_key=True)
+    crname = models.CharField(max_length=100)
+    fee = models.CharField(max_length=100)
+    duration = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100000)
+    def __str__(self):
+        return "%s %s" % (self.cid,self.crname)
+class Teacherdata(models.Model):
+    tid = models.AutoField(primary_key=True)
+    crid = models.CharField(max_length=10)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=15)
+    gender = models.CharField(max_length=10)
+    dob = models.DateField()
+    address = models.TextField()
+
+    joining_date = models.DateField(auto_now_add=True)
+    status = models.BooleanField(default=True)
+
+    def __str__(self):
+        return "%s %s" % (self.tid, self.name)
+
 class Studentdata(models.Model):
     stid = models.AutoField(primary_key=True)
     stname = models.CharField(max_length=100)
@@ -29,14 +53,7 @@ class Logindata(models.Model):
     def __str__(self):
         return self.email
 
-class Coursedata(models.Model):
-    cid = models.AutoField(primary_key=True)
-    crname = models.CharField(max_length=100)
-    fee = models.CharField(max_length=100)
-    duration = models.CharField(max_length=100)
-    remark = models.CharField(max_length=100000)
-    def __str__(self):
-        return "%s %s" % (self.cid,self.crname)
+
 
 class StudentCoursedata(models.Model):
     st_crid = models.AutoField(primary_key=True)
