@@ -38,3 +38,95 @@
 - GET /api/reports/subject/id/ — Subject wise report
 - GET /api/reports/export/ — Export as CSV or PDF
 - GET /api/reports/summary/ — Dashboard summary stats
+
+
+
+
+
+
+
+
+
+
+## Detailed API Examples
+
+### 1. Login API Example
+
+Endpoint:
+POST /api/auth/login/
+
+Request:
+{
+  "username": "student1",
+  "password": "123456"
+}
+
+Response:
+{
+  "token": "abc123xyz",
+  "role": "student"
+}
+
+---
+
+### 2. Get Attendance
+
+Endpoint:
+GET /api/attendance/
+
+Response:
+[
+  {
+    "student_id": 1,
+    "subject": "Math",
+    "date": "2026-04-07",
+    "status": "Present"
+  }
+]
+
+---
+
+### 3. Mark Attendance (Manual)
+
+Endpoint:
+POST /api/attendance/mark/
+
+Request:
+{
+  "student_id": 1,
+  "subject_id": 2,
+  "status": "Present"
+}
+
+Response:
+{
+  "message": "Attendance marked successfully"
+}
+
+---
+
+### 4. Face Recognition Attendance
+
+Endpoint:
+POST /api/attendance/face-mark/
+
+Request:
+{
+  "user_id": 1,
+  "confidence": 0.92
+}
+
+Response:
+{
+  "message": "Face recognized and attendance marked"
+}
+
+---
+
+## Error Codes
+
+- 400 → Bad Request
+- 401 → Unauthorized
+- 403 → Forbidden
+- 404 → Not Found
+- 500 → Server Error
