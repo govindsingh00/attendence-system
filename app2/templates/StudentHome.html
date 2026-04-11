@@ -22,7 +22,9 @@
             Last Qualification : {{d.lastquali}} <br/>
             Contact : {{d.contact}} <br/>
             Email : {{d.email}} <br/>
+            Section : {{ d.section|default:"—" }} <br/>
         </p>
+        <p><a class="btn btn-sm btn-outline-light" href="http://127.0.0.1:8000/student_attendance/">View attendance</a></p>
         <form method="post" action="http://127.0.0.1:8000/editstprofile/">
             {% csrf_token %}
             <input type="hidden" name="S1" value="{{d.stid}}">

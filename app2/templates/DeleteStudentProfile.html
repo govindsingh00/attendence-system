@@ -30,8 +30,7 @@
                         <thead>
                             <th>COURSE ID</th>
                             <th>JOINED COURSES</th>
-                            <th>TOTAL COURSE FEE</th>
-                            <th>COURSE JOINING DATA</th>
+                            <th>JOINING DATE</th>
                             <th>REMARK</th>
                         </thead>
                 {% for d2 in data2 %}
@@ -39,7 +38,6 @@
                             <tr>
                                 <td>{{d2.st_crid}}</td>
                                 <td>{{d2.crname}}</td>
-                                <td>{{d2.fee}}</td>
                                 <td>{{d2.joining}}</td>
                                 <td>{{d2.remark}}</td>
                             </tr>
@@ -48,29 +46,6 @@
                 </table>
             {% else %}
                     <h2>NO JOINED COURSES</h2>
-            {% endif %}
-
-            {% if data3 %}
-                    <table border="2px">
-                        <thead>
-                            <th>TRANSECTION ID</th>
-                            <th>COURSE ID</th>
-                            <th>INSTALLMENTS</th>
-                            <th>SUB DATA</th>
-                            <th>REMARK</th>
-                        </thead>
-                {% for d3 in data3 %}
-                        <tbody>
-                            <tr>
-                                <td>{{d3.tid}}</td>
-                                <td>{{d3.stcrid}}</td>
-                                <td>{{d3.inst}}</td>
-                                <td>{{d3.sub_date}}</td>
-                                <td>{{d3.remark}}</td>
-                            </tr>
-                {% endfor %}
-                        </tbody>
-                    </table>
             {% endif %}
                 <button type="submit">CONFIRM DELETE</button>
             </form>

@@ -5,7 +5,6 @@
 {% if data %}
     {% for d in data %}
         <h3>{{d.crname}}</h3>
-        <p>{{d.fee}}</p>
         <p>{{d.duration}}</p>
         <p>{{d.remark}}</p>
         <form method="post" action="http://127.0.0.1:8000/edit_course/">
