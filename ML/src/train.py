@@ -7,8 +7,7 @@ from deepface import DeepFace
 class FaceTrainer:
     """Handles training the face recognition model using saved face images."""
 
-    def __init__(self, dataset_dir: str = "datasets", model_dir: str = "models",
-                 model_name: str = "VGG-Face"):
+    def __init__(self, dataset_dir: str = "datasets", model_dir: str = "models",model_name: str = "ArcFace"):
         self.dataset_dir = dataset_dir
         self.model_dir = model_dir
         self.model_name = model_name

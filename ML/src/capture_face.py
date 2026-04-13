@@ -9,9 +9,7 @@ class FaceCapture:
         self.max_images = max_images
         self.count = 0
         self.cam = None
-        self.face_cascade = cv2.CascadeClassifier(
-            cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-        )
+        self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
     def _setup_directory(self):
         """Create student directory if it doesn't exist."""
@@ -26,13 +24,10 @@ class FaceCapture:
     def _detect_face(self, frame):
         """Detect faces in frame and return faces + annotated frame."""
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = self.face_cascade.detectMultiScale(
-            gray, scaleFactor=1.3, minNeighbors=5, minSize=(80, 80)
-        )
+        faces = self.face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(80, 80))
         for (x, y, w, h) in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            cv2.putText(frame, "Face Detected", (x, y - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+            cv2.putText(frame, "Face Detected", (x, y - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
         return faces, frame
 
     def _save_image(self, frame):
