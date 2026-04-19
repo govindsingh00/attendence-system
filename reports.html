@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AttendPro — Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.report-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px; }
+.report-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius); padding:22px;
+  box-shadow:var(--shadow); cursor:pointer;
+  transition:transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s, border-color 0.2s;
+  animation:fadeUp 0.4s ease both;
+  display:flex; flex-direction:column; gap:14px;
+}
+.report-card:hover { transform:translateY(-5px) scale(1.015); box-shadow:var(--shadow-md); border-color:var(--border2); }
+.report-card:hover .rc-icon { transform:scale(1.15) rotate(-5deg); }
+
+.rc-top { display:flex; align-items:flex-start; justify-content:space-between; }
+.rc-icon {
+  width:48px; height:48px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform 0.3s cubic-bezier(.34,1.56,.64,1);
+}
+.rc-icon svg { width:22px; height:22px; fill:none; stroke-width:2.2; }
+.rc-badge { font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:0.5px; }
+
+.rc-info { margin-top:4px; }
+.rc-title { font-size:16px; font-weight:700; color:var(--text); margin-bottom:4px; font-family:'Fraunces',serif; }
+.rc-sub { font-size:12px; color:var(--text3); line-height:1.5; }
+
+.rc-foot { display:flex; align-items:center; gap:6px; margin-top:auto; font-size:11px; font-weight:600; color:var(--accent); }
+.rc-foot svg { width:14px; height:14px; stroke-width:2.5; }
+
+.rep-main { display:grid; grid-template-columns:1fr 340px; gap:16px; }
+.month-row { display:flex; align-items:center; gap:14px; padding:12px 10px; border-radius:12px; cursor:pointer; transition:background 0.2s; }
+.month-row:hover { background:var(--bg); }
+.month-info { flex:1; }
+.month-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.month-name { font-size:13px; font-weight:600; color:var(--text); }
+.month-sub { font-size:11px; color:var(--text3); margin-bottom:8px; }
+.month-bar { width:100%; height:6px; background:var(--bg); border-radius:10px; overflow:hidden; }
+.month-fill { height:100%; border-radius:10px; width:0; transition:width 1s cubic-bezier(.25,.46,.45,.94); }
+.month-pct { font-size:13px; font-weight:700; font-family:'Fraunces',serif; width:36px; text-align:right; }
+
+.top-emp-row { display:flex; align-items:center; gap:12px; padding:10px 8px; border-radius:10px; transition:background 0.2s; cursor:pointer; border-bottom:1px solid var(--border); }
+.top-emp-row:last-child { border-bottom:none; }
+.top-emp-row:hover { background:var(--bg); }
+.te-info { flex:1; }
+.te-name { font-size:13px; font-weight:600; color:var(--text); }
+.te-dept { font-size:11px; color:var(--text3); }
+.te-days { font-size:11px; font-weight:700; color:var(--green); background:var(--green-soft); padding:3px 7px; border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar anim-down">
+    <div class="page-title-wrap">
+      <div class="page-name">Reports</div>
+      <div class="breadcrumb">AttendPro / Reports</div>
+    </div>
+    <div class="topbar-actions">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search reports...">
+      </div>
+      <div class="avatar-btn">AD</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="report-grid">
+      <div class="report-card d1">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:#eef2ff"><svg style="stroke:#6366f1" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+          <span class="rc-badge" style="background:#eef2ff;color:#6366f1">Monthly</span>
+        </div>
+        <div class="rc-info">
+          <div class="rc-title">Monthly Attendance</div>
+          <div class="rc-sub">Complete summary of employee attendance for this month.</div>
+        </div>
+        <div class="rc-foot">Download PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 13l5 5 5-5M12 18V6"/></svg></div>
+      </div>
+
+      <div class="report-card d2">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:#ecfdf5"><svg style="stroke:#10b981" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div>
+          <span class="rc-badge" style="background:#ecfdf5;color:#10b981">Analysis</span>
+        </div>
+        <div class="rc-info">
+          <div class="rc-title">Department Wise</div>
+          <div class="rc-sub">Comparison of attendance and performance by department.</div>
+        </div>
+        <div class="rc-foot">View Report <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+
+      <div class="report-card d3">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:#fffbeb"><svg style="stroke:#f59e0b" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <span class="rc-badge" style="background:#fffbeb;color:#f59e0b">Staff</span>
+        </div>
+        <div class="rc-info">
+          <div class="rc-title">Leave & Absence</div>
+          <div class="rc-sub">Detailed report of leaves taken and late arrivals.</div>
+        </div>
+        <div class="rc-foot">Generate CSV <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 13l5 5 5-5M12 18V6"/></svg></div>
+      </div>
+    </div>
+
+    <div class="rep-main">
+      <div class="panel anim-up d4">
+        <div class="panel-hd">
+          <div class="panel-title">Yearly Comparison</div>
+          <div class="panel-action">Filter Year 2026 ↓</div>
+        </div>
+        <div id="monthList"></div>
+      </div>
+
+      <div class="panel anim-up d5">
+        <div class="panel-hd">
+          <div class="panel-title">Top Performers</div>
+          <div class="panel-action">View all</div>
+        </div>
+        <div id="topEmps"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+renderSidebar('reports');
+
+const months = [
+  {name:'April', sub:'248 employees • Ongoing month', pct:85, c:'#6366f1', current:true},
+  {name:'March', sub:'244 employees • Finalized', pct:92, c:'#10b981'},
+  {name:'February', sub:'240 employees • Finalized', pct:89, c:'#10b981'},
+  {name:'January', sub:'238 employees • Finalized', pct:94, c:'#10b981'},
+  {name:'December', sub:'235 employees • Last Year', pct:82, c:'#f59e0b'},
+];
+
+document.getElementById('monthList').innerHTML = months.map(m => `
+  <div class="month-row">
+    <div class="month-info">
+      <div class="month-top"><span class="month-name">${m.name}</span> ${m.current ? '<span style="background:var(--accent-soft);color:var(--accent);font-size:9px;padding:2px 6px;border-radius:10px;font-weight:600">Current</span>' : ''}</div>
+      <div class="month-sub">${m.sub}</div>
+      <div class="month-bar"><div class="month-fill" data-w="${m.pct}" style="background:${m.c}"></div></div>
+    </div>
+    <div class="month-pct" style="color:${m.c}">${m.pct}%</div>
+  </div>`).join('');
+
+setTimeout(() => { document.querySelectorAll('.month-fill').forEach(f => f.style.width = f.dataset.w + '%'); }, 300);
+
+const tops = [
+  {init:'SA', av:'av2', name:'Simran Arora', dept:'HR', days:'22/22'},
+  {init:'RK', av:'av1', name:'Rohan Kumar', dept:'Engineering', days:'22/22'},
+  {init:'AN', av:'av3', name:'Anjali Nair', dept:'HR', days:'21/22'},
+  {init:'DV', av:'av2', name:'Deepa Verma', dept:'Finance', days:'21/22'},
+  {init:'PS', av:'av1', name:'Priya Singh', dept:'Engineering', days:'20/22'},
+];
+
+const avC = {av1:{bg:'#eef2ff',c:'#6366f1'}, av2:{bg:'#ecfdf5',c:'#10b981'}, av3:{bg:'#fdf4ff',c:'#9333ea'}};
+
+document.getElementById('topEmps').innerHTML = tops.map((e, i) => {
+  const col = avC[e.av] || avC.av1;
+  return `
+  <div class="top-emp-row">
+    <div class="av" style="background:${col.bg};color:${col.c}">${e.init}</div>
+    <div class="te-info"><div class="te-name">${e.name}</div><div class="te-dept">${e.dept}</div></div>
+    <div class="te-days">${e.days}</div>
+  </div>`;
+}).join('');
+</script>
+</body>
+</html>

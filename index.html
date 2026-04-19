@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AttendPro — Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Fraunces:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: #6366f1; --bg: #f5f6fa; --white: #ffffff; --text: #1a1d2e; --text2: #6b7280;
+  --shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+body { background: var(--bg); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 60px 20px; }
+
+.header { text-align: center; margin-bottom: 50px; }
+.header h1 { font-family: 'Fraunces', serif; font-size: 42px; color: var(--text); margin-bottom: 10px; }
+.header p { color: var(--text2); font-size: 18px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; width: 100%; max-width: 1000px; }
+
+.card {
+  background: var(--white); border-radius: 24px; padding: 32px; text-align: center;
+  text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.02);
+  display: flex; flex-direction: column; align-items: center; gap: 15px;
+}
+.card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(99,102,241,0.15); border-color: var(--accent); }
+
+.icon-box {
+  width: 64px; height: 64px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px; transition: 0.3s;
+}
+.card svg { width: 32px; height: 32px; stroke-width: 2; fill: none; }
+
+/* Colors for different cards */
+.c-login { background: #eef2ff; color: #6366f1; }
+.c-home { background: #ecfdf5; color: #10b981; }
+.c-dash { background: #fffbeb; color: #f59e0b; }
+.c-emp { background: #eff6ff; color: #3b82f6; }
+.c-rep { background: #fdf4ff; color: #d946ef; }
+.c-abt { background: #f8fafc; color: #64748b; }
+
+.card-title { font-size: 18px; font-weight: 700; color: var(--text); }
+.card-desc { font-size: 13px; color: var(--text2); line-height: 1.4; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.card { animation: fadeIn 0.5s ease both; }
+.d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; }
+.d4 { animation-delay: 0.4s; } .d5 { animation-delay: 0.5s; } .d6 { animation-delay: 0.6s; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>AttendPro Portal</h1>
+    <p>Select a module to get started</p>
+  </div>
+
+  <div class="grid">
+    <a href="login.html" class="card d1">
+      <div class="icon-box c-login"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg></div>
+      <div class="card-title">Login Page</div>
+      <div class="card-desc">Secure gateway to your account</div>
+    </a>
+
+    <a href="home.html" class="card d2">
+      <div class="icon-box c-home"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="card-title">Home Page</div>
+      <div class="card-desc">Main landing & daily overview</div>
+    </a>
+
+    <a href="dashboard.html" class="card d3">
+      <div class="icon-box c-dash"><svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+      <div class="card-title">Dashboard</div>
+      <div class="card-desc">Real-time attendance analytics</div>
+    </a>
+
+    <a href="employees.html" class="card d4">
+      <div class="icon-box c-emp"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="card-title">Employees</div>
+      <div class="card-desc">Manage staff & check-ins</div>
+    </a>
+
+    <a href="reports.html" class="card d5">
+      <div class="icon-box c-rep"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <div class="card-title">Reports</div>
+      <div class="card-desc">Download detailed data</div>
+    </a>
+
+    <a href="about.html" class="card d6">
+      <div class="icon-box c-abt"><svg viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+      <div class="card-title">About</div>
+      <div class="card-desc">System info & Support</div>
+    </a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AttendPro — Employees</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.toolbar { display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+.filter-btn { font-size:12px; font-weight:500; padding:7px 16px; border-radius:var(--radius-pill); border:1px solid var(--border); background:var(--white); color:var(--text2); cursor:pointer; transition:all 0.18s; }
+.filter-btn:hover { border-color:var(--border2); color:var(--text); }
+.filter-btn.on { background:var(--accent-soft); border-color:var(--accent-border); color:var(--accent); font-weight:600; }
+.filter-btn.on.g { background:var(--green-soft); border-color:var(--green-border); color:var(--green); }
+.filter-btn.on.a { background:var(--amber-soft); border-color:var(--amber-border); color:var(--amber); }
+.filter-btn.on.r { background:var(--red-soft); border-color:var(--red-border); color:var(--red); }
+
+.view-toggle { display:flex; background:var(--bg); padding:4px; border-radius:10px; margin-left:auto; }
+.v-btn { padding:6px 10px; border-radius:7px; border:none; background:transparent; cursor:pointer; color:var(--text3); transition:0.2s; }
+.v-btn svg { width:16px; height:16px; fill:none; stroke-width:2; }
+.v-btn.on { background:var(--white); color:var(--accent); box-shadow:var(--shadow); }
+
+.emp-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:16px; }
+.emp-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:20px; text-align:center; position:relative; transition:0.2s; cursor:pointer; animation:fadeUp 0.4s ease both; }
+.emp-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-md); border-color:var(--border2); }
+.ec-av { width:64px; height:64px; border-radius:20px; margin:0 auto 12px; font-size:20px; font-weight:700; color:#fff; display:flex; align-items:center; justify-content:center; }
+.ec-name { font-size:15px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.ec-role { font-size:11px; color:var(--text3); margin-bottom:12px; font-weight:500; }
+.ec-meta { display:flex; border-top:1px solid var(--border); margin-top:14px; padding-top:14px; gap:10px; }
+.ec-item { flex:1; }
+.ec-lbl { font-size:9px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; }
+.ec-val { font-size:11px; font-weight:600; color:var(--text2); }
+
+.tbl-view { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; display:none; }
+.tbl-view.active { display:block; }
+table { width:100%; border-collapse:collapse; text-align:left; }
+th { background:var(--bg); font-size:11px; font-weight:600; color:var(--text3); padding:14px 18px; text-transform:uppercase; letter-spacing:0.5px; }
+td { padding:14px 18px; border-bottom:1px solid var(--border); font-size:13px; color:var(--text2); }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:rgba(245,246,250,0.5); }
+.hidden { display:none !important; }
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar anim-down">
+    <div class="page-title-wrap">
+      <div class="page-name">Employees</div>
+      <div class="breadcrumb">AttendPro / Employees</div>
+    </div>
+    <div class="topbar-actions">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search by name or ID...">
+      </div>
+      <button class="btn-primary" style="padding:9px 16px; font-size:12px;">+ Add Employee</button>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="toolbar anim-up d1">
+      <button class="filter-btn on" onclick="filterEmp(this,'all')">All Employees</button>
+      <button class="filter-btn g" onclick="filterEmp(this,'present')">Present</button>
+      <button class="filter-btn a" onclick="filterEmp(this,'late')">Late</button>
+      <button class="filter-btn r" onclick="filterEmp(this,'absent')">Absent</button>
+      
+      <div class="view-toggle">
+        <button class="v-btn on" id="cardBtn" onclick="toggleView('card')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
+        <button class="v-btn" id="tblBtn" onclick="toggleView('list')"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+      </div>
+    </div>
+
+    <div id="cardView" class="emp-grid"></div>
+
+    <div id="tblView" class="tbl-view">
+      <table>
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Position</th>
+            <th>Check-in</th>
+            <th>Status</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody id="tblBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+renderSidebar('employees');
+
+const allEmps = [
+  {id:'EMP-101', name:'Rahul Patel', role:'Engineering', pos:'Sr. Developer', status:'present', time:'08:47 AM', phone:'+91 98765 43210', av:'av1', init:'RP'},
+  {id:'EMP-102', name:'Simran Arora', role:'HR', pos:'Manager', status:'present', time:'08:52 AM', phone:'+91 98765 11223', av:'av2', init:'SA'},
+  {id:'EMP-103', name:'Neha Khanna', role:'Finance', pos:'Analyst', status:'present', time:'08:59 AM', phone:'+91 98765 44556', av:'av3', init:'NK'},
+  {id:'EMP-104', name:'Mohit Kapoor', role:'Sales', pos:'Executive', status:'late', time:'09:38 AM', phone:'+91 98765 77889', av:'av4', init:'MK'},
+  {id:'EMP-105', name:'Vikram Sharma', role:'Design', pos:'UI Lead', status:'absent', time:'—', phone:'+91 98765 00998', av:'av5', init:'VS'},
+  {id:'EMP-106', name:'Priya Singh', role:'Engineering', pos:'Developer', status:'present', time:'09:02 AM', phone:'+91 98765 66778', av:'av6', init:'PS'},
+  {id:'EMP-107', name:'Deepa Verma', role:'Marketing', pos:'Lead', status:'present', time:'09:11 AM', phone:'+91 98765 22334', av:'av2', init:'DV'},
+  {id:'EMP-108', name:'Aakash Mehta', role:'HR', pos:'Assistant', status:'absent', time:'—', phone:'+91 98765 33445', av:'av4', init:'AM'}
+];
+
+let currentFilter = 'all';
+
+function getStatusInfo(s) {
+  if(s==='present') return {cls:'b-present', label:'Present'};
+  if(s==='late') return {cls:'b-late', label:'Late'};
+  return {cls:'b-absent', label:'Absent'};
+}
+
+function renderCards(data) {
+  const container = document.getElementById('cardView');
+  container.innerHTML = data.map(e => {
+    const s = getStatusInfo(e.status);
+    return `
+    <div class="emp-card">
+      <span class="badge ${s.cls}" style="position:absolute; top:12px; right:12px;">${s.label}</span>
+      <div class="ec-av ${e.av}">${e.init}</div>
+      <div class="ec-name">${e.name}</div>
+      <div class="ec-role">${e.pos} • ${e.role}</div>
+      <div class="ec-meta">
+        <div class="ec-item"><div class="ec-lbl">Emp ID</div><div class="ec-val">${e.id}</div></div>
+        <div class="ec-item"><div class="ec-lbl">Check-in</div><div class="ec-val">${e.time}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTable(data) {
+  const body = document.getElementById('tblBody');
+  body.innerHTML = data.map(e => {
+    const s = getStatusInfo(e.status);
+    return `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="av ${e.av}" style="width:32px;height:32px;font-size:11px;">${e.init}</div>
+          <div><div style="font-weight:600;color:var(--text)">${e.name}</div><div style="font-size:11px;color:var(--text3)">${e.id}</div></div>
+        </div>
+      </td>
+      <td>${e.role}</td><td>${e.pos}</td><td>${e.time}</td>
+      <td><span class="badge ${s.cls}">${s.label}</span></td>
+      <td style="color:var(--text2)">${e.phone}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterEmp(btn, f) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  currentFilter = f;
+  const filtered = f === 'all' ? allEmps : allEmps.filter(e => e.status === f);
+  renderCards(filtered); renderTable(filtered);
+}
+
+function toggleView(v) {
+  if (v === 'card') {
+    document.getElementById('cardView').classList.remove('hidden');
+    document.getElementById('tblView').classList.remove('active');
+    document.getElementById('cardBtn').classList.add('on');
+    document.getElementById('tblBtn').classList.remove('on');
+  } else {
+    document.getElementById('cardView').classList.add('hidden');
+    document.getElementById('tblView').classList.add('active');
+    document.getElementById('tblBtn').classList.add('on');
+    document.getElementById('cardBtn').classList.remove('on');
+  }
+}
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  const base = currentFilter === 'all' ? allEmps : allEmps.filter(e => e.status === currentFilter);
+  const res = base.filter(e => e.name.toLowerCase().includes(q) || e.id.toLowerCase().includes(q));
+  renderCards(res); renderTable(res);
+});
+
+// Initial Render
+renderCards(allEmps);
+renderTable(allEmps);
+</script>
+</body>
+</html>

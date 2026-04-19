@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AttendPro — About</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.hero {
+  background:linear-gradient(135deg,#6366f1 0%,#818cf8 55%,#4f46e5 100%);
+  border-radius:var(--radius); padding:48px 40px;
+  text-align:center; margin-bottom:22px;
+  position:relative; overflow:hidden;
+  box-shadow:0 6px 24px rgba(99,102,241,0.3);
+  animation:fadeUp 0.4s ease both;
+}
+.hero::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+.hero-title { font-family:'Fraunces',serif; font-size:36px; color:#fff; margin-bottom:12px; position:relative; }
+.hero-sub { font-size:15px; color:rgba(255,255,255,0.8); max-width:600px; margin:0 auto; position:relative; line-height:1.6; }
+
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.info-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow); }
+.info-card h3 { font-family:'Fraunces',serif; font-size:22px; color:var(--text); margin-bottom:14px; }
+.info-card p { font-size:13.5px; color:var(--text2); line-height:1.7; margin-bottom:16px; }
+
+.feat-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.feat-icon { width:32px; height:32px; border-radius:8px; background:var(--accent-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.feat-icon svg { width:16px; height:16px; stroke:var(--accent); stroke-width:2.5; fill:none; }
+.feat-text { font-size:13px; font-weight:600; color:var(--text); }
+
+.contact-section { margin-top:16px; }
+.contact-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.contact-card { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:18px; display:flex; align-items:center; gap:14px; transition:0.2s; cursor:pointer; }
+.contact-card:hover { border-color:var(--accent-border); background:var(--bg); transform:translateY(-3px); }
+.cc-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.cc-icon svg { width:20px; height:20px; fill:none; stroke-width:2; }
+.cc-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px; }
+.cc-val { font-size:13px; font-weight:600; color:var(--text); }
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar anim-down">
+    <div class="page-title-wrap">
+      <div class="page-name">About System</div>
+      <div class="breadcrumb">AttendPro / About</div>
+    </div>
+    <div class="topbar-actions">
+      <div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Search info..."></div>
+      <div class="avatar-btn">AD</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="hero">
+      <div class="hero-title">About AttendPro</div>
+      <div class="hero-sub">We provide a modern and digital solution for your company's attendance and employee management needs.</div>
+    </div>
+
+    <div class="about-grid">
+      <div class="info-card anim-up d1">
+        <h3>Our Mission</h3>
+        <p>AttendPro's mission is to make the management process simple and transparent for every organization. We believe that technology can improve punctuality and productivity.</p>
+        <div class="feat-row">
+          <div class="feat-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="feat-text">Real-time tracking and reporting</div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="feat-text">Secure data and privacy protection</div>
+        </div>
+      </div>
+
+      <div class="info-card anim-up d2">
+        <h3>System Version</h3>
+        <p>Currently, you are using AttendPro v2.4.0 (Enterprise Edition). This version includes advanced analytics and automated report generation features.</p>
+        <div class="feat-row">
+          <div class="feat-icon" style="background:var(--green-soft)"><svg style="stroke:var(--green)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="feat-text">Cloud Sync Enabled</div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-icon" style="background:var(--green-soft)"><svg style="stroke:var(--green)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="feat-text">Automated Daily Backups</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-section panel anim-up d3">
+      <div class="panel-hd"><div class="panel-title">Support & Contact</div></div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="cc-icon" style="background:#eef2ff"><svg style="stroke:#6366f1" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div class="cc-label">Email</div><div class="cc-val">support@attendpro.in</div></div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon" style="background:#ecfdf5"><svg style="stroke:#10b981" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.22L6.52 2a2 2 0 0 1 2 1.72 12.81 12.81 0 0 0 .81 4.5 2 2 0 0 1-.45 2.11L8.09 12.29a16 16 0 0 0 6.17 6.18l2.73-2.73a2 2 0 0 1 2.11-.45 12.81 12.81 0 0 0 4.5.81 2 2 0 0 1 1.72 2.22z"/></svg></div>
+          <div><div class="cc-label">Helpline</div><div class="cc-val">+91 1800-123-456</div></div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon" style="background:#fffbeb"><svg style="stroke:#f59e0b" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div><div class="cc-label">Website</div><div class="cc-val">www.attendpro.in</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>renderSidebar('about');</script>
+</body>
+</html>
