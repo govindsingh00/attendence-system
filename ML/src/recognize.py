@@ -1,31 +1,37 @@
 import cv2
 import json
 import numpy as np
+import requests
 from deepface import DeepFace
 
 
 class FaceRecognizer:
     """Handles real-time face recognition using saved face encodings."""
 
-    def __init__(self, encodings_path: str = "models/encodings.json",model_name: str = "ArcFace", threshold: float = 0.4):
+    def __init__(self, encodings_path: str = "models/encodings.json",model_name: str = "ArcFace", threshold: float = 0.4, django_url: str = "http://127.0.0.1:8000/ml/recognize/"):
         self.encodings_path = encodings_path
         self.model_name = model_name
         self.threshold = threshold
+        self.django_url = django_url
         self.known_encodings = {}
         self.cam = None
-        self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+        self.face_cascade = cv2.CascadeClassifier(
+            cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+        )
 
     def _load_encodings(self):
         """Load saved face encodings from JSON file."""
         if not __import__('os').path.exists(self.encodings_path):
-            raise FileNotFoundError(f"Encodings file not found at '{self.encodings_path}'. Run train.py first.")
+            raise FileNotFoundError(
+                f"Encodings file not found at '{self.encodings_path}'. Run train.py first."
+            )
         with open(self.encodings_path, "r") as f:
             self.known_encodings = json.load(f)
         print(f"[INFO] Loaded encodings for {len(self.known_encodings)} student(s).")
 
     def _initialize_camera(self):
         """Initialize the webcam."""
-        self.cam = cv2.VideoCapture(1)
+        self.cam = cv2.VideoCapture(0)
         if not self.cam.isOpened():
             raise RuntimeError("Could not open camera.")
 
@@ -68,6 +74,41 @@ class FaceRecognizer:
             print(f"[WARNING] Could not generate embedding: {e}")
             return None
 
+    def _send_to_django(self, stid: str, score: float):
+        """Send recognized student ID to Django backend."""
+        if stid == "Unknown":
+            return
+
+        try:
+            response = requests.post(
+                self.django_url,
+                json={"stid": stid, "score": score},
+                timeout=5
+            )
+            if response.status_code == 200:
+                print(f"[INFO] Sent stid {stid} to Django successfully.")
+            else:
+                print(f"[WARNING] Django returned status {response.status_code}")
+        except Exception as e:
+            print(f"[WARNING] Could not send to Django: {e}")
+
+    def get_recognized_student(self, frame) -> dict:
+        """
+        Called by Django view directly.
+        Takes a camera frame.
+        Returns student ID and confidence score.
+        """
+        embedding = self._get_embedding(frame)
+        if not embedding:
+            return {"stid": None, "msg": "No face detected"}
+
+        stid, score = self._match_face(embedding)
+        return {
+            "stid": stid,
+            "score": score,
+            "msg": "success"
+        }
+
     def _draw_result(self, frame, x: int, y: int, w: int, h: int,
                      student_id: str, score: float):
         """Draw bounding box and recognition result on frame."""
@@ -75,12 +116,14 @@ class FaceRecognizer:
         label = f"ID: {student_id} ({score})"
 
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-        cv2.putText(frame, label, (x, y - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
+        cv2.putText(frame, label, (x, y - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
         return frame
 
     def _draw_status(self, frame):
         """Draw status bar on the frame."""
-        cv2.putText(frame, "Press 'q' to quit", (10, 30),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
+        cv2.putText(frame, "Press 'q' to quit", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
         return frame
 
     def recognize(self):
@@ -89,15 +132,19 @@ class FaceRecognizer:
         self._initialize_camera()
 
         print("[INFO] Starting face recognition... Press 'q' to quit.")
+        sent_ids = set()  # track already sent IDs to avoid duplicates
 
         while True:
             ret, frame = self.cam.read()
+
             if not ret:
                 print("[ERROR] Failed to read from camera.")
                 break
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            faces = self.face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(80, 80))
+            faces = self.face_cascade.detectMultiScale(
+                gray, scaleFactor=1.3, minNeighbors=5, minSize=(80, 80)
+            )
 
             for (x, y, w, h) in faces:
                 face_crop = frame[y:y + h, x:x + w]
@@ -106,6 +153,12 @@ class FaceRecognizer:
                 if embedding:
                     student_id, score = self._match_face(embedding)
                     frame = self._draw_result(frame, x, y, w, h, student_id, score)
+
+                    # Send to Django only once per student per session
+                    if student_id != "Unknown" and student_id not in sent_ids:
+                        self._send_to_django(student_id, score)
+                        sent_ids.add(student_id)
+                        print(f"[INFO] Student {student_id} marked present!")
 
             frame = self._draw_status(frame)
             cv2.imshow("Face Recognition", frame)
